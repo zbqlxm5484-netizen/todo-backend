@@ -6,13 +6,23 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 
 from rest_framework_simplejwt.tokens import RefreshToken
+from drf_spectacular.utils import extend_schema
 
-from .serializers import RegisterSerializer
+from .serializers import (
+    LoginSerializer,
+    MessageSerializer,
+    RegisterSerializer,
+)
 
 
 class RegisterView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=RegisterSerializer,
+        responses={201: RegisterSerializer},
+        tags=["accounts"],
+    )
     def post(self, request):
 
         serializer = RegisterSerializer(data=request.data)
@@ -27,6 +37,11 @@ class RegisterView(APIView):
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
+    @extend_schema(
+        request=LoginSerializer,
+        responses={200: MessageSerializer},
+        tags=["accounts"],
+    )
     def post(self, request):
 
         username = request.data.get("username")
@@ -74,6 +89,11 @@ class LoginView(APIView):
 
 class LogoutView(APIView):
 
+    @extend_schema(
+        request=None,
+        responses={200: MessageSerializer},
+        tags=["accounts"],
+    )
     def post(self, request):
 
         response = Response({
@@ -84,3 +104,5 @@ class LogoutView(APIView):
         response.delete_cookie("refresh")
 
         return response
+    
+
