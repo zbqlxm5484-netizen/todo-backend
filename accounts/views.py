@@ -3,13 +3,14 @@ from django.contrib.auth import authenticate
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from rest_framework_simplejwt.tokens import RefreshToken
 from drf_spectacular.utils import extend_schema
 
 from .serializers import (
     LoginSerializer,
+    MeResponseSerializer,
     MessageSerializer,
     RegisterSerializer,
 )
@@ -104,5 +105,23 @@ class LogoutView(APIView):
         response.delete_cookie("refresh")
 
         return response
-    
+
+
+class MeView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @extend_schema(
+        request=None,
+        responses={200: MeResponseSerializer},
+        tags=["accounts"],
+    )
+    def get(self, request):
+        user = request.user
+
+        return Response({
+            "user": {
+                "id": user.id,
+                "name": user.nickname,
+            }
+        })
 
