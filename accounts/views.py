@@ -17,6 +17,7 @@ from .serializers import (
 
 
 class RegisterView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     @extend_schema(
@@ -36,6 +37,7 @@ class RegisterView(APIView):
 
 
 class LoginView(APIView):
+    authentication_classes = []
     permission_classes = [AllowAny]
 
     @extend_schema(
@@ -89,6 +91,8 @@ class LoginView(APIView):
 
 
 class LogoutView(APIView):
+    authentication_classes = []
+    permission_classes = [AllowAny]
 
     @extend_schema(
         request=None,
@@ -127,4 +131,3 @@ class MeView(APIView):
 
             }
         })
-
