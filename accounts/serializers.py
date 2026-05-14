@@ -14,6 +14,8 @@ class LoginSerializer(serializers.Serializer):
 class MeUserSerializer(serializers.Serializer):
     id = serializers.IntegerField()
     name = serializers.CharField()
+    nickname = serializers.CharField()
+    email = serializers.EmailField()
 
 
 class MeResponseSerializer(serializers.Serializer):

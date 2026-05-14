@@ -121,7 +121,10 @@ class MeView(APIView):
         return Response({
             "user": {
                 "id": user.id,
-                "name": user.nickname,
+                "name": user.username,
+                'nickname' : user.nickname,
+                'email' : user.email,
+
             }
         })
 
